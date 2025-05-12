@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="search-container">
+    <h1>محرك البحث العربي</h1>
+    <form method="get" action="{% url 'search' %}" id="search-form">
+        <input type="text" name="q" id="search-input" value="{{ request.GET.q }}" placeholder="اكتب كلمات البحث هنا..."
+            dir="rtl" required>
+        <button type="submit">بحث</button>
+    </form>
+</div>
+{% endblock %}

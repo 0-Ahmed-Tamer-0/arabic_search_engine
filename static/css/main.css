@@ -1,0 +1,24 @@
+/* Ensure proper RTL layout */
+.search-container {
+    text-align: right;
+    direction: rtl;
+}
+
+#search-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    margin: 20px 0;
+}
+
+.query-text {
+    color: #2c5f2d;
+    font-weight: bold;
+}
+
+.results-stats {
+    color: #666;
+    margin-bottom: 20px;
+}

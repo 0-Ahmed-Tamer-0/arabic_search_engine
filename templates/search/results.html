@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="results-container">
+    {% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if query %}
+    <h2>نتائج البحث عن: <span class="query-text">"{{ query }}"</span></h2>
+    {% endif %}
+
+    {% if results %}
+    <div class="results-stats">
+        العثور على {{ results|length }} نتيجة
+    </div>
+    <div class="results-list">
+        {% for result in results %}
+        <div class="result-item">
+            <div class="score">التشابه: {{ result.score|floatformat:3 }}</div>
+            <p class="document-text">{{ result.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif not error %}
+    <div class="no-results">
+        <p>لم يتم العثور على نتائج لـ "{{ query }}"</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
