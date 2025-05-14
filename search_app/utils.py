@@ -37,7 +37,7 @@
 #         with torch.no_grad():
 #             outputs = self.bert_model(**inputs)
 #         return outputs.last_hidden_state[:,0,:].numpy()
-
+#----------working code-------------
 # utils.py
 import re
 import nltk
@@ -129,3 +129,101 @@ class ArabicProcessor:
             
         # Use [CLS] token embedding as document representation
         return outputs.last_hidden_state[:,0,:].numpy()
+#====end of working code---------------------------
+
+# utils.py
+# import re
+# import nltk
+# from nltk.corpus import stopwords
+# from camel_tools.disambig.mle import MLEDisambiguator
+# from camel_tools.tokenizers.word import simple_word_tokenize
+# from transformers import AutoTokenizer, AutoModel
+# import torch
+
+# # nltk.download('stopwords')
+
+# class ArabicProcessor:
+#     def __init__(self):
+#         self.stopwords = set(stopwords.words('arabic'))
+#         self.mle = MLEDisambiguator.pretrained()
+#         self.tokenizer = AutoTokenizer.from_pretrained("aubmindlab/bert-base-arabertv02")
+#         self.model = AutoModel.from_pretrained("aubmindlab/bert-base-arabertv02")
+        
+#         # Normalization mappings
+#         self.norm_map = {
+#             'أ': 'ا', 'إ': 'ا', 'آ': 'ا', 'ة': 'ه', 
+#             'ى': 'ي', 'ئ': 'ء', 'ؤ': 'ء'
+#         }
+
+#     def normalize(self, text):
+#         """Arabic text normalization"""
+#         for char, repl in self.norm_map.items():
+#             text = text.replace(char, repl)
+#         text = re.sub(r'[\u064B-\u065F\u0670]', '', text)
+#         return text.strip()
+
+#     def lemmatize(self, tokens):
+#         """Arabic lemmatization using camel-tools"""
+#         disambig = self.mle.disambiguate(tokens)
+#         return [d.analyses[0].analysis['lex'] if d.analyses else t 
+#                 for d, t in zip(disambig, tokens)]
+
+#     def preprocess(self, text):
+#         """Full preprocessing pipeline"""
+#         text = self.normalize(text)
+#         tokens = simple_word_tokenize(text)
+#         tokens = [t for t in tokens if t not in self.stopwords]
+#         return ' '.join(self.lemmatize(tokens))
+
+#     def get_embedding(self, text):
+#         """Generate BERT embedding for processed text"""
+#         processed = self.preprocess(text)
+#         inputs = self.tokenizer(
+#             processed,
+#             return_tensors="pt",
+#             max_length=512,
+#             truncation=True,
+#             padding='max_length'
+#         )
+#         with torch.no_grad():
+#             outputs = self.model(**inputs)
+#         return outputs.last_hidden_state[:,0,:].numpy()
+
+# class HybridRetriever:
+#     def __init__(self, documents):
+#         self.inverted_index = self.build_inverted_index(documents)
+#         self.doc_embeddings = []
+        
+#     def build_inverted_index(self, documents):
+#         """Create inverted index from PDF example (modified for Arabic)"""
+#         index = {}
+#         for doc_id, text in documents.items():
+#             tokens = simple_word_tokenize(text)
+#             clean_tokens = [t for t in tokens if t not in set(stopwords.words('arabic'))]
+#             for token in clean_tokens:
+#                 if token not in index:
+#                     index[token] = set()
+#                 index[token].add(doc_id)
+#         return index
+
+    # def bert_retrieval(self, query, top_k=10):
+    #     """BERT-based semantic search"""
+    #     query_embedding = self.get_embedding(query)
+    #     # FAISS search implementation here
+    #     return sorted_results
+
+    # def keyword_retrieval(self, query):
+    #     """Traditional keyword search"""
+    #     query_terms = self.preprocess(query).split()
+    #     results = set()
+    #     for term in query_terms:
+    #         if term in self.inverted_index:
+    #             results.update(self.inverted_index[term])
+    #     return list(results)
+
+    # def hybrid_search(self, query):
+    #     """Combine BERT and keyword results"""
+    #     semantic_results = self.bert_retrieval(query)
+    #     keyword_results = self.keyword_retrieval(query)
+    #     # Combine and re-rank results
+    #     return final_results

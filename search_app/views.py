@@ -118,3 +118,19 @@ def search_view(request):
 #             })
         
 #     return render(request, 'search/search.html')
+# views.py
+# from django.shortcuts import render
+# from .models import Document
+# from .utils import ArabicProcessor, HybridRetriever
+
+# processor = ArabicProcessor()
+# documents = {doc.id: doc.text for doc in Document.objects.all()}
+# retriever = HybridRetriever(documents)
+
+# def search_view(request):
+#     if request.method == 'GET':
+#         query = request.GET.get('q', '')
+#         if query:
+#             results = retriever.keyword_retrieval(query)
+#             return render(request, 'results.html', {'results': results})
+#     return render(request, 'search.html')
